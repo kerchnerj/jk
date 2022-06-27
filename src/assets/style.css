@@ -1,3 +1,20 @@
 body{
     background-color: #E1EFF2;
 }
+
+.wrapper {
+    display: flex;
+    width: 100%;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+#sidebar {
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 999;
+    background:black;
+    color: #fff;
+}
