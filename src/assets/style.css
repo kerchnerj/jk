@@ -14,7 +14,18 @@ body{
     top: 0;
     left: 0;
     height: 100vh;
-    z-index: 999;
     background:black;
     color: #fff;
+}
+.bx-book-alt{
+    color:rgba(67,61,61,0.65);
+}
+.bxs-book-reader{
+    color:rgba(67,61,61,0.65);
+}
+.bx-comment-edit{
+    color:rgba(67,61,61,0.65);
+}
+.bxs-category-alt{
+    color:rgba(67,61,61,0.65);
 }
