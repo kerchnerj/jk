@@ -10,8 +10,8 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/categorias',
-      name: 'categorias',
+      path: '/',
+      name: 'Categorias',
       component: CategoriasPrincipal
     },
     {
@@ -30,9 +30,11 @@ const router = createRouter({
 
     {
       path: '/editoras',
-      name: 'editoras',
+      name: '/editoras',
       component: EditorasPrincipal
     },
+
+                                  
     {
       path: '/main',
       name: 'main',
