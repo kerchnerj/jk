@@ -6,26 +6,26 @@ export default {
       categorias: [
         {
           id: "01986caa-0a42-4eef-9d11-25c77fd98df1",
-          categoria: "Ação e Aventura",
+          categorias: "Ação e Aventura",
         },
         {
           id: "19be6257-67d9-413a-a0ff-840a8acaba75",
-          categoria: "Ficção Científica",
+          categorias: "Ficção Científica",
         },
         {
           id: "520465a6-36e2-4554-9499-d2ed6209b9e7",
-          categoria: "/",
+          categorias: "AutoAjuda",
         },
         {
           id: "632a0b5e-41f2-4acb-8c36-019b10f81ade",
-          categoria: "Romance",
+          categorias: "Romance",
         },
         {
           id: "9db7a2ed-e1c2-43b2-b222-47a64a860427",
-          categoria: "Suspense",
+          categorias: "Suspense",
         },
       ],
-      nova_categoria: "",
+      nova_categorias: "",
     };
   },
   methods: {
@@ -33,7 +33,7 @@ export default {
       const novo_id = (uuidv4);
       this.categorias.push({
         id: novo_id,
-        categoria: this.nova_categoria,
+        categorias: this.nova_categorias,
       });
     },
   },
@@ -48,7 +48,7 @@ export default {
         <h2>Gerenciamento de Categorias</h2>
       </div>
       <div class="form-input">
-        <input type="text" v-model="nova_categoria" />
+        <input type="text" v-model="nova_categorias" />
         <button @click="salvar">Salvar</button>
       </div>
       <div class="list-categorias">
@@ -56,17 +56,13 @@ export default {
           <thead>
             <tr>
               <th>ID</th>
-              <th>Nome</th>
-              <th></th>
-              <th></th>
+              <th>Categorias</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for='categorias in categorias' :key="categorias.id">
               <td>{{categorias.id}}</td>
               <td>{{categorias.nome}}</td>
-              <td></td>
-              <td></td>
             </tr>
           </tbody>
         </table>
@@ -79,6 +75,7 @@ export default {
   display: flex;
   justify-content: center;
   margin-top: 30px;
+     font-family:Georgia, 'Times New Roman', Times, serif;
 }
 .form-input {
   margin-top: 10px;
