@@ -6,35 +6,42 @@ export default {
       autores: [
         {
           id: "01986caa-0a42-4eef-9d11-25c77fd98df1",
-          autores: "William Shakespeare",
+          autor: "William Shakespeare",
         },
         {
           id: "19be6257-67d9-413a-a0ff-840a8acaba75",
-          autores: "Sarah J. Maas",
+          autor: "Sarah J. Maas",
         },
         {
           id: "520465a6-36e2-4554-9499-d2ed6209b9e7",
-          autores: "Leigh Bardugo",
+          autor: "Leigh Bardugo",
         },
         {
           id: "632a0b5e-41f2-4acb-8c36-019b10f81ade",
-          autores: "E. L. James",
+          autor: "E. L. James",
         },
         {
           id: "9db7a2ed-e1c2-43b2-b222-47a64a860427",
-          autores: "Kiera Cass",
+          autor: "Kiera Cass",
         },
       ],
       novo_autores: "",
     };
   },
-  methods: {
+methods: {
     salvar() {
-      const novo_id = (uuidv4);
-      this.autores.push({
-        id: novo_id,
-        autores: this.novo_autores,
-      });
+      if (this.novo_autores !== "") {
+        const novo_id = uuidv4();
+        this.autor.push({
+          id: novo_id,
+          autor: this.novo_autores,
+        });
+        this.novo_autores = "";
+      }
+    },
+    excluir(autor) {
+      const indice = this.autores.indexOf(autor);
+      this.autores.splice(indice, 1);
     },
   },
 };
@@ -59,9 +66,11 @@ export default {
             </tr>
           </thead>
           <tbody>
-            <tr v-for="autores in autores" :key="autores.id">
+            <tr v-for="autor in autores" :key="autor.id">
               <td>{{ autores.id }}</td>
               <td>{{ autores.nome }}</td>
+              <td> <button>editar</button>
+                <button @click="excluir(autor)">excluir</button> </td>
             </tr>
           </tbody>
         </table>

@@ -6,35 +6,42 @@ export default {
       livros: [
         {
           id: "01986caa-0a42-4eef-9d11-25c77fd98df1",
-          livros: "Acotar",
+          livro: "Acotar",
         },
         {
           id: "19be6257-67d9-413a-a0ff-840a8acaba75",
-          livros: "Extraodinário",
+          livro: "Extraodinário",
         },
         {
           id: "520465a6-36e2-4554-9499-d2ed6209b9e7",
-          livros: "O acordo",
+          livro: "O acordo",
         },
         {
           id: "632a0b5e-41f2-4acb-8c36-019b10f81ade",
-          livros: "Drácula, meu amor ",
+          livro: "Drácula, meu amor ",
         },
         {
           id: "9db7a2ed-e1c2-43b2-b222-47a64a860427",
-          livros: "O morro dos ventos uivantes",
+          livro: "O morro dos ventos uivantes",
         },
       ],
       novo_livros: "",
     };
   },
-  methods: {
+methods: {
     salvar() {
-      const novo_id = (uuidv4);
-      this.livros.push({
-        id: novo_id,
-        livros: this.novo_livros,
-      });
+      if (this.novo_livros !== "") {
+        const novo_id = uuidv4();
+        this.livro.push({
+          id: novo_id,
+          livro: this.novo_livros,
+        });
+        this.novo_livros = "";
+      }
+    },
+    excluir(livro) {
+      const indice = this.livros.indexOf(livro);
+      this.livros.splice(indice, 1);
     },
   },
 };
@@ -64,6 +71,8 @@ export default {
             <tr v-for="livros in livros" :key="livros.id">
               <td>{{ livros.id }}</td>
               <td>{{ livros.nome }}</td>
+               <td> <button>editar</button>
+                <button @click="excluir(livro)">excluir</button> </td>
             </tr>
           </tbody>
         </table>

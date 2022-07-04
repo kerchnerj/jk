@@ -6,38 +6,47 @@ export default {
       categorias: [
         {
           id: "01986caa-0a42-4eef-9d11-25c77fd98df1",
-          categorias: "Ação e Aventura",
+          categoria: "Ação e Aventura",
         },
         {
           id: "19be6257-67d9-413a-a0ff-840a8acaba75",
-          categorias: "Ficção Científica",
+          categoria: "Ficção Científica",
         },
         {
           id: "520465a6-36e2-4554-9499-d2ed6209b9e7",
-          categorias: "AutoAjuda",
+          categoria: "AutoAjuda",
         },
         {
           id: "632a0b5e-41f2-4acb-8c36-019b10f81ade",
-          categorias: "Romance",
+          categoria: "Romance",
         },
         {
           id: "9db7a2ed-e1c2-43b2-b222-47a64a860427",
-          categorias: "Suspense",
+          categoria: "Suspense",
         },
       ],
       nova_categorias: "",
     };
   },
-  methods: {
+   methods: {
     salvar() {
-      const novo_id = (uuidv4);
-      this.categorias.push({
-        id: novo_id,
-        categorias: this.nova_categorias,
-      });
+      if (this.nova_categorias !== "") {
+        const novo_id = uuidv4();
+        this.categorias.push({
+          id: novo_id,
+          categoria: this.nova_categorias,
+        });
+        this.nova_categorias = "";
+      }
+    },
+    excluir(categoria) {
+      const indice = this.categorias.indexOf(categoria);
+      this.categorias.splice(indice, 1);
     },
   },
 };
+
+
 </script>
 
 
@@ -60,9 +69,11 @@ export default {
             </tr>
           </thead>
           <tbody>
-            <tr v-for='categorias in categorias' :key="categorias.id">
+            <tr v-for='categoria in categorias' :key="categoria.id">
               <td>{{categorias.id}}</td>
               <td>{{categorias.nome}}</td>
+              <td> <button>editar</button>
+                <button @click="excluir(categoria)">excluir</button> </td>
             </tr>
           </tbody>
         </table>
