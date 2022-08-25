@@ -1,81 +1,150 @@
 <script>
-import { v4 as uuidv4 } from "uuid";
+import LivrosApi from "@/api/livros.js";
+import AutoresApi from "@/api/autores.js";
+import CategoriasApi from "@/api/categorias.js";
+import EditorasApi from "@/api/editoras.js";
+const livrosApi = new LivrosApi();
+const autoresApi = new AutoresApi();
+const categoriasApi = new CategoriasApi();
+const editorasApi = new EditorasApi();
 export default {
   data() {
     return {
-      livros: [
-        {
-          id: "01986caa-0a42-4eef-9d11-25c77fd98df1",
-          livro: "Acotar",
-        },
-        {
-          id: "19be6257-67d9-413a-a0ff-840a8acaba75",
-          livro: "Extraodinário",
-        },
-        {
-          id: "520465a6-36e2-4554-9499-d2ed6209b9e7",
-          livro: "O acordo",
-        },
-        {
-          id: "632a0b5e-41f2-4acb-8c36-019b10f81ade",
-          livro: "Drácula, meu amor ",
-        },
-        {
-          id: "9db7a2ed-e1c2-43b2-b222-47a64a860427",
-          livro: "O morro dos ventos uivantes",
-        },
-      ],
-      novo_livros: "",
+      livro: {},
+      livros: [],
+      categoria: {},
+      categorias: [],
+      editora: {},
+      editoras: [],
+      autor: {},
+      autores: [],
     };
   },
-methods: {
-    salvar() {
-      if (this.novo_livros !== "") {
-        const novo_id = uuidv4();
-        this.livro.push({
-          id: novo_id,
-          livro: this.novo_livros,
-        });
-        this.novo_livros = "";
+  async created() {
+    this.livros = await livrosApi.buscarTodosOsLivros();
+    this.autores = await autoresApi.buscarTodosOsAutores();
+    this.categorias = await categoriasApi.buscarTodasAsCategorias();
+    this.editoras = await editorasApi.buscarTodasAsEditoras();
+  },
+  methods: {
+    async salvar() {
+      if (this.livro.id) {
+        await livrosApi.atualizarLivro(this.livro);
+      } else {
+        await livrosApi.adicionarLivro(this.livro);
       }
+      this.livros = await livrosApi.buscarTodosOsLivros();
+      this.categorias = await categoriasApi.buscarTodasAsCategorias();
+      this.editoras = await editorasApi.buscarTodasAsEditoras();
+      this.autores = await autoresApi.buscarTodosOsAutores();
+      this.livro = {};
     },
-    excluir(livro) {
-      const indice = this.livros.indexOf(livro);
-      this.livros.splice(indice, 1);
+    async excluir(livro) {
+      await livrosApi.excluirLivro(livro.id);
+      this.livros = await livrosApi.buscarTodosOsLivros();
+    },
+    editar(livro) {
+      Object.assign(this.livro, livro);
     },
   },
 };
 </script>
 
-
-
 <template>
   <main>
     <div class="container">
       <div class="title">
-        <h2>Gerenciamento de Livros</h2>
+        <h1>Gerenciamento de livros</h1>
       </div>
       <div class="form-input">
-        <input type="text" v-model="novo_livros" />
-        <button @click="salvar">Salvar</button>
+        <div class="center_input">
+          <input
+            id="input_tit"
+            type="text"
+            v-model="livro.nome"
+            placeholder="Título"
+          />
+          <select id="categorias" v-model="livro.categoria">
+            <option disabled value="">Escolha uma categoria</option>
+            <option
+              v-for="categoria of categorias"
+              :key="categoria.id"
+              :value="categoria.descricao"
+            >
+              {{ categoria.descricao }}
+            </option>
+          </select>
+          <select id="autores" v-model="livro.autor">
+            <option disabled value="">Escolha um autor</option>
+            <option
+              v-for="autor of autores"
+              :key="autor.id"
+              :value="autor.nome"
+            >
+              {{ autor.nome }}
+            </option>
+          </select>
+          <select id="editoras" v-model="livro.editora">
+            <option disabled value="">Escolha uma editora</option>
+            <option
+              v-for="editora of editoras"
+              :key="editora.id"
+              :value="editora.nome"
+            >
+              {{ editora.nome }}
+            </option>
+          </select>
+          <input
+            id="input_quant"
+            type="number"
+            v-model="livro.quantidade"
+            placeholder="Quantidade"
+          />
+          <input
+            id="input_pre"
+            type="number"
+            v-model="livro.preco"
+            placeholder="Preço"
+          />
+          <div class="center">
+            <button @click="salvar">Salvar</button>
+          </div>
+        </div>
       </div>
       <div class="list-livros">
-        <table>
+        <table v-if="livros.length > 0">
           <thead>
             <tr>
               <th>ID</th>
-              <th>Livros</th>
+              <th>Título</th>
+              <th>Categoria</th>
+              <th>Editora</th>
+              <th>Autor</th>
+              <th>Quantidade</th>
+              <th>Preço</th>
+              <th>Ação</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="livros in livros" :key="livros.id">
-              <td>{{ livros.id }}</td>
-              <td>{{ livros.nome }}</td>
-               <td> <button>editar</button>
-                <button @click="excluir(livro)">excluir</button> </td>
+            <tr v-for="livro in livros" :key="livro.id">
+              <td>{{ livro.id }}</td>
+              <td>{{ livro.nome }}</td>
+              <td>{{ livro.categoria }}</td>
+              <td>{{ livro.editora }}</td>
+              <td>{{ livro.autor }}</td>
+              <td>{{ livro.quantidade }}</td>
+              <td>{{ livro.preco }}</td>
+              <td>
+                <button @click="editar(livro)">editar</button>
+                <button @click="excluir(livro)">excluir</button>
+              </td>
             </tr>
           </tbody>
         </table>
+        <div class="senao" v-else>
+          <span class="aviso">Não existem livros cadastrados</span>
+          <i class="bx bx-error"></i>
+        </div>
       </div>
     </div>
   </main>

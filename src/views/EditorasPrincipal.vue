@@ -1,82 +1,85 @@
 <script>
-import { v4 as uuidv4 } from "uuid";
+import EditorasApi from "@/api/editoras.js";
+const editorasApi = new EditorasApi();
 export default {
   data() {
     return {
-      editoras: [
-        {
-          id: "01986caa-0a42-4eef-9d11-25c77fd98df1",
-          editora: "Editora Rocco",
-        },
-        {
-          id: "19be6257-67d9-413a-a0ff-840a8acaba75",
-          editora: "Editora Sextante",
-        },
-        {
-          id: "520465a6-36e2-4554-9499-d2ed6209b9e7",
-          editora: "Panda Books",
-        },
-        {
-          id: "632a0b5e-41f2-4acb-8c36-019b10f81ade",
-          editora: "Companhia das Letras",
-        },
-        {
-          id: "9db7a2ed-e1c2-43b2-b222-47a64a860427",
-          editora: "Editora Arqueiro",
-        },
-      ],
-      novo_editoras: "",
+      editora: {},
+      editoras: [],
     };
   },
+  async created() {
+    this.editoras = await editorasApi.buscarTodasAsEditoras();
+  },
   methods: {
-    salvar() {
-      if (this.novo_editoras !== "") {
-        const novo_id = uuidv4();
-        this.editora.push({
-          id: novo_id,
-          editora: this.novo_editoras,
-        });
-        this.novo_editoras = "";
+    async salvar() {
+      if (this.editora.id) {
+        await editorasApi.atualizarEditora(this.editora);
+      } else {
+        await editorasApi.adicionarEditora(this.editora);
       }
+      this.editoras = await editorasApi.buscarTodasAsEditoras();
+      this.editora = {};
     },
-    excluir(editora) {
-      const indice = this.editoras.indexOf(editora);
-      this.editoras.splice(indice, 1);
+    async excluir(editora) {
+      await editorasApi.excluirEditora(editora.id);
+      this.editoras = await editorasApi.buscarTodasAsEditoras();
+    },
+    editar(editora) {
+      Object.assign(this.editora, editora);
     },
   },
 };
 </script>
-
 <template>
-<main>
+  <main>
     <div class="container">
       <div class="title">
-        <h2>Gerenciamento de Editoras</h2>
+        <h1>Gerenciamento de editoras</h1>
       </div>
-      <div class="form-input">
-        <input type="text" v-model="novo_editoras" />
-        <button @click="salvar"> Salvar </button>
+      <div class="form">
+        <input
+          id="edsi"
+          type="text"
+          v-model="editora.nome"
+          placeholder="Editora..."
+        />
+        <input
+          id="edsi"
+          type="url"
+          v-model="editora.site"
+          placeholder="Site..."
+        />
+        <button @click="salvar">Salvar</button>
       </div>
-      <div class="list-editoras">
-        <table>
+      <div class="list-livros">
+        <table v-if="editoras.length > 0">
           <thead>
             <tr>
               <th>ID</th>
-              <th>Editoras</th>
+              <th>Editora</th>
+              <th>Site</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="editora in editoras" :key="editora.id">
-              <td>{{ editoras.id }}</td>
-              <td>{{ editoras.nome }}</td>
-               <td> <button>editar</button>
-                <button @click="excluir(editora)">excluir</button> </td>
+              <td>{{ editora.id }}</td>
+              <td>{{ editora.nome }}</td>
+              <td>{{ editora.site }}</td>
+              <td>
+                <button @click="editar(editora)">editar</button>
+                <button @click="excluir(editora)">excluir</button>
+              </td>
             </tr>
           </tbody>
         </table>
+        <div class="senao" v-else>
+          <span class="aviso">Não existem editoras cadastradas</span>
+          <i class="bx bx-error"></i>
+        </div>
       </div>
     </div>
- </main>
+  </main>
 </template>
  <style>
 .title {

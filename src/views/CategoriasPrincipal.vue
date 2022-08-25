@@ -1,87 +1,78 @@
 <script>
-import {  v4 as uuidv4 }  from "uuid";
+import CategoriasApi from "@/api/categorias.js";
+const categoriasApi = new CategoriasApi();
 export default {
   data() {
     return {
-      categorias: [
-        {
-          id: "01986caa-0a42-4eef-9d11-25c77fd98df1",
-          categoria: "Ação e Aventura",
-        },
-        {
-          id: "19be6257-67d9-413a-a0ff-840a8acaba75",
-          categoria: "Ficção Científica",
-        },
-        {
-          id: "520465a6-36e2-4554-9499-d2ed6209b9e7",
-          categoria: "AutoAjuda",
-        },
-        {
-          id: "632a0b5e-41f2-4acb-8c36-019b10f81ade",
-          categoria: "Romance",
-        },
-        {
-          id: "9db7a2ed-e1c2-43b2-b222-47a64a860427",
-          categoria: "Suspense",
-        },
-      ],
-      nova_categorias: "",
+      categoria: {},
+      categorias: [],
     };
   },
-   methods: {
-    salvar() {
-      if (this.nova_categorias !== "") {
-        const novo_id = uuidv4();
-        this.categorias.push({
-          id: novo_id,
-          categoria: this.nova_categorias,
-        });
-        this.nova_categorias = "";
+  async created() {
+    this.categorias = await categoriasApi.buscarTodasAsCategorias();
+  },
+  methods: {
+    async salvar() {
+      if (this.categoria.id) {
+        await categoriasApi.atualizarCategoria(this.categoria);
+      } else {
+        await categoriasApi.adicionarCategoria(this.categoria);
       }
+      this.categorias = await categoriasApi.buscarTodasAsCategorias();
+      this.categoria = {};
     },
-    excluir(categoria) {
-      const indice = this.categorias.indexOf(categoria);
-      this.categorias.splice(indice, 1);
+    async excluir(categoria) {
+      await categoriasApi.excluirCategoria(categoria.id);
+      this.categorias = await categoriasApi.buscarTodasAsCategorias();
+    },
+    editar(categoria) {
+      Object.assign(this.categoria, categoria);
     },
   },
 };
-
-
 </script>
-
-
 <template>
-<main>
+  <main>
     <div class="container">
       <div class="title">
-        <h2>Gerenciamento de Categorias</h2>
+        <h1>Gerenciamento de categorias</h1>
       </div>
       <div class="form-input">
-        <input type="text" v-model="nova_categorias" />
+        <input
+          type="text"
+          v-model="categoria.descricao"
+          placeholder="Categoria..."
+        />
         <button @click="salvar">Salvar</button>
       </div>
       <div class="list-categorias">
-        <table>
+        <table v-if="categorias.length > 0">
           <thead>
             <tr>
               <th>ID</th>
-              <th>Categorias</th>
+              <th>Categoria</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for='categoria in categorias' :key="categoria.id">
-              <td>{{categorias.id}}</td>
-              <td>{{categorias.nome}}</td>
-              <td> <button>editar</button>
-                <button @click="excluir(categoria)">excluir</button> </td>
+            <tr v-for="categoria in categorias" :key="categoria.id">
+              <td>{{ categoria.id }}</td>
+              <td>{{ categoria.descricao }}</td>
+              <td>
+                <button @click="editar(categoria)">editar</button>
+                <button @click="excluir(categoria)">excluir</button>
+              </td>
             </tr>
           </tbody>
         </table>
+        <div class="senao" v-else>
+          <span class="aviso">Não existem categorias cadastradas</span>
+          <i class="bx bx-error"></i>
+        </div>
       </div>
     </div>
-</main>
+  </main>
 </template>
- <style>
+<style>
 .title {
   display: flex;
   justify-content: center;
@@ -112,6 +103,7 @@ export default {
   cursor: pointer;
 }
 .list-categorias{
+  margin-top: 15px;
   display: flex;
   justify-content: center;
 }
