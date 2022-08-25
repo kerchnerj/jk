@@ -3,7 +3,6 @@ import CategoriasPrincipal from '../views/CategoriasPrincipal.vue'
 import LivrosPrincipal from '../views/LivrosPrincipal.vue'
 import AutoresPrincipal from '../views/AutoresPrincipal.vue'
 import EditorasPrincipal from '../views/EditorasPrincipal.vue'
-import MainView from '../views/MainView.vue'
 
 
 const router = createRouter({
@@ -32,15 +31,7 @@ const router = createRouter({
       path: '/editoras',
       name: '/editoras',
       component: EditorasPrincipal
-    },
-
-                                  
-    {
-      path: '/main',
-      name: 'main',
-      component: MainView
-    },
-    
+    },  
 
   ]
 })

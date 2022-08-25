@@ -37,7 +37,7 @@ export default {
       <div class="title">
         <h1>Gerenciamento de autores</h1>
       </div>
-      <div class="form">
+      <div class="form-input">
         <input
           type="text"
           v-model="autor.nome"
@@ -67,7 +67,6 @@ export default {
         </table>
         <div class="senao" v-else>
           <span class="aviso">Não existem autores cadastrados</span>
-          <i class="bx bx-error"></i>
         </div>
       </div>
     </div>

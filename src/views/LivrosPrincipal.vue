@@ -107,7 +107,7 @@ export default {
             placeholder="Preço"
           />
           <div class="center">
-            <button @click="salvar">Salvar</button>
+            <button id="btn" @click="salvar">Salvar</button>
           </div>
         </div>
       </div>
@@ -143,60 +143,67 @@ export default {
         </table>
         <div class="senao" v-else>
           <span class="aviso">Não existem livros cadastrados</span>
-          <i class="bx bx-error"></i>
         </div>
       </div>
     </div>
   </main>
 </template>
- <style>
- .title {
-   display: flex;
-   justify-content: center;
-   margin-top: 30px;
-   font-family:Georgia, 'Times New Roman', Times, serif;
- }
- 
- .form-input {
-   margin-top: 10px;
-   display: flex;
-   justify-content: center;
- }
- 
- .form-input input {
-   width: 60%;
-   height: 40px;
-   border: 1px solid rgb(147, 147, 147);
-   border-radius: 10px;
-   padding: 0 10px;
- }
- 
- .form-input button {
-   margin-left: 1px;
-   width: 20%;
-   height: 40px;
-   border: 1px solid rgb(211, 211, 211);
-   border-radius: 10px;
-   background-color: rgba(67, 61, 61, 0.65);
-   color: rgb(255, 255, 255);
-   font-weight: bold;
-   cursor: pointer;
-   font-family: 'IM Fell French Canon SC', serif;
- }
- 
- .list-livros {
-   display: flex;
-   justify-content: center;
- }
- 
- .list-livros table {
-   width: 80%;
-   margin: 0 auto;
-   border-collapse: collapse;
- }
- 
- table tr td {
-   border: 1px solid rgb(211, 211, 211);
-   padding: 10px;
- }
- </style>
+<style>
+.center_input {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+.title {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  font-family:Georgia, 'Times New Roman', Times, serif;
+}
+
+.form-input {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.form-input input, select {
+  width: 60%;
+  height: 40px;
+  border: 1px solid rgb(147, 147, 147);
+  border-radius: 10px;
+  padding: 0 10px;
+}
+
+.form-input button {
+  margin-left: 1px;
+  width: 20%;
+  height: 40px;
+  border: 1px solid rgb(211, 211, 211);
+  border-radius: 10px;
+  background-color: rgba(67, 61, 61, 0.65);
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+  cursor: pointer;
+  font-family: 'IM Fell French Canon SC', serif;
+}
+#btn {
+  width: 100%;
+}
+.list-livros {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.list-livros table {
+  width: 80%;
+  margin: 0 auto;
+  border-collapse: collapse;
+}
+
+table tr td {
+  border: 1px solid rgb(211, 211, 211);
+  padding: 10px;
+}
+</style>

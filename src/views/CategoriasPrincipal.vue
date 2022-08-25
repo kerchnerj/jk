@@ -66,7 +66,6 @@ export default {
         </table>
         <div class="senao" v-else>
           <span class="aviso">Não existem categorias cadastradas</span>
-          <i class="bx bx-error"></i>
         </div>
       </div>
     </div>
